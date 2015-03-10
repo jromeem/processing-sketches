@@ -12,13 +12,13 @@ void setup() {
   noFill();
   
   values = new int[width][height];
-  cam = new PeasyCam(this, width/2, height/2, 0, 1500);
+  cam = new PeasyCam(this, width/2, height/2, 0, 600);
   cam.setMinimumDistance(1);
   cam.setMaximumDistance(2000);
 
   // Extract the brightness of each pixel in the image
   // and store in the "values" array
-  img = loadImage("eric.png");
+  img = loadImage("delta.jpg");
   img.loadPixels();
   for (int i = 0; i < img.height; i++) {
     for (int j = 0; j < img.width; j++) {
