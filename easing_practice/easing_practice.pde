@@ -1,6 +1,8 @@
 float time, angle;
 int numFrames = 140;
 
+boolean debug = true;
+
 void setup() {
   size(500, 500);
   background(255);
@@ -8,34 +10,64 @@ void setup() {
 
 void draw() {
   background(255);
-  translate(width/2, height/2);
+  translate(40, 40);
   
-  // full rotation according to the frame count with easing
+  // track time for all squares
   time = map(frameCount, 0, numFrames, 0, 1);
   
-  // time constrains
-  if (time < 0.15) {
-    angle = easeOutQuart(time, 0, -20, 0.15);
-  } else {
-    float ani2 = map(time, 0.15, 1, 0, 0.85);
-    angle = easeOutQuart(ani2, -20, 20+270, 0.85);
+  for (int i=0; i<3; i++) {
+    for (int j=0; j<3; j++) {
+      pushMatrix();
+      translate(140*j, 140*i);
+      rect(20, 20, 100, 100);
+      if (debug)
+        ellipse(70, 70, 140, 140);
+        
+        Quare quare = new Quare(color(255,255,255), color(255,0,0));
+//        rect(-10, -10, 20, 20);
+        quare.animate();
+//      rect((140-70*sqrt(2))/2,(140-70*sqrt(2))/2, 70*sqrt(2), 70*sqrt(2));
+      
+      popMatrix();
+    } 
   }
-  
-  // angle constrains
-  if (angle < 45) {
-    // fill default to white
-    fill(255); 
-  } else if (angle > 45 && time < 0.5) {  // wow so hacky sack
-    fill(colorEase(color(255,255,255), color(255,0,0), 0.5));
-  } else {
-    fill(255,0,0); 
-  }
-  
-  rotate(radians(angle));
-  rect(-50, -50, 100, 100, 4);
-  
+ 
   if (frameCount == numFrames) {
     exit();
+  }
+}
+
+class Quare {
+  color startColor;  // starting color
+  color transColor;  // transitioning color
+  
+  Quare(color sColor, color tColor) {
+    startColor = sColor;
+    transColor = tColor; 
+  }
+  
+  // animating function - using time global
+  void animate() {
+    // time constrains
+    if (time < 0.15) {
+      angle = easeOutQuart(time, 0, -20, 0.15);
+    } else {
+      float ani2 = map(time, 0.15, 1, 0, 0.85);
+      angle = easeOutQuart(ani2, -20, 20+270, 0.85);
+    }
+    
+    // angle constrains
+    if (angle < 45) {
+      fill(startColor); 
+    } else if (angle > 45 && time < 0.5) {  // wow so hacky sack
+      fill(colorEase(startColor, transColor, 0.5));
+    } else {
+      fill(transColor);
+    }
+    
+//    rotate(radians(angle));
+    translate(70, 70);
+    rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2));
   }
 }
 
