@@ -1,7 +1,7 @@
 float time, angle;
 int numFrames = 140;
 
-boolean debug = true;
+boolean debug = false;
 
 void setup() {
   size(500, 500);
@@ -19,14 +19,11 @@ void draw() {
     for (int j=0; j<3; j++) {
       pushMatrix();
       translate(140*j, 140*i);
-      rect(20, 20, 100, 100);
       if (debug)
         ellipse(70, 70, 140, 140);
         
         Quare quare = new Quare(color(255,255,255), color(255,0,0));
-//        rect(-10, -10, 20, 20);
         quare.animate();
-//      rect((140-70*sqrt(2))/2,(140-70*sqrt(2))/2, 70*sqrt(2), 70*sqrt(2));
       
       popMatrix();
     } 
@@ -65,8 +62,8 @@ class Quare {
       fill(transColor);
     }
     
-//    rotate(radians(angle));
     translate(70, 70);
+    rotate(radians(angle));
     rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2));
   }
 }
