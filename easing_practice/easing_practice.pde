@@ -1,31 +1,48 @@
 float time, angle;
-int numFrames = 140;
-
+int numFrames = 140*9/2;
+int frameSample = 70;
 boolean debug = false;
+Quare[] quares = new Quare[9];
+color[] theme = {
+    color(76,78,115),
+    color(76,97,115),
+    color(60,89,86),
+    color(85,217,131),
+    color(32,191,27),
+    color(34,84,115),
+    color(80,191,151),
+    color(50,140,107),
+    color(44,115,95)
+  };
 
 void setup() {
   size(500, 500);
-  background(255);
+  noStroke();
+  for (int i=0; i<9; i++) {
+    quares[i] = new Quare(theme[(i+1)%9], theme[i], i*0.5);
+  }
 }
 
 void draw() {
-  background(255);
+  background(80);
   translate(40, 40);
   
   // track time for all squares
-  time = map(frameCount, 0, numFrames, 0, 1);
+  time = map(frameCount, 0, numFrames, 0, 4.5);
   
+  int count = 0;
   for (int i=0; i<3; i++) {
     for (int j=0; j<3; j++) {
       pushMatrix();
-      translate(140*j, 140*i);
-      if (debug)
-        ellipse(70, 70, 140, 140);
-        
-        Quare quare = new Quare(color(255,255,255), color(255,0,0));
-        quare.animate();
-      
+        translate(140*j, 140*i);
+        pushMatrix();
+//          Quare quare = new Quare(color(255,255,255), color(255,0,0));
+//          quare.animate(); 
+            quares[count].animate();
+        popMatrix();
       popMatrix();
+      
+      count++;
     } 
   }
  
@@ -37,10 +54,12 @@ void draw() {
 class Quare {
   color startColor;  // starting color
   color transColor;  // transitioning color
+  float aniDelay;
   
-  Quare(color sColor, color tColor) {
+  Quare(color sColor, color tColor, float delay) {
     startColor = sColor;
-    transColor = tColor; 
+    transColor = tColor;
+    aniDelay = delay;
   }
   
   // animating function - using time global
@@ -64,6 +83,10 @@ class Quare {
     
     translate(70, 70);
     rotate(radians(angle));
+    rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2), 8);
+  }
+  
+  void station() {
     rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2));
   }
 }
