@@ -1,5 +1,5 @@
 float time, angle;
-int numFrames = 140*9/2;
+int numFrames = 100;
 int frameSample = 70;
 boolean debug = false;
 Quare[] quares = new Quare[9];
@@ -14,39 +14,62 @@ color[] theme = {
     color(50,140,107),
     color(44,115,95)
   };
+boolean switched = false;
+
+
+color BL = color(62,97,166);
+color GN = color(142,191,69);
+color YL = color(217,192,67);
+color PK = color(255,160,169);
+color LGN = color(163,212,111);
+color WT = color(255,255,255);
 
 void setup() {
   size(500, 500);
   noStroke();
   for (int i=0; i<9; i++) {
-    quares[i] = new Quare(theme[(i+1)%9], theme[i], i*0.5);
+    if (i % 2 == 0) {
+      quares[i] = new Quare(LGN,WT,i*0.0);
+    } else {
+      quares[i] = new Quare(WT,LGN,i*0.0); 
+    }
+    //quares[i] = new Quare(theme[(i+1)%9], theme[i], i*0.05);
   }
 }
 
 void draw() {
-  background(80);
+  background(PK);
   translate(40, 40);
   
   // track time for all squares
-  time = map(frameCount, 0, numFrames, 0, 4.5);
+  time = map(frameCount, 0, numFrames, 0, 1) % 1;
   
   int count = 0;
   for (int i=0; i<3; i++) {
     for (int j=0; j<3; j++) {
       pushMatrix();
         translate(140*j, 140*i);
-        pushMatrix();
-//          Quare quare = new Quare(color(255,255,255), color(255,0,0));
-//          quare.animate(); 
+        //pushMatrix();
+          //Quare quare = new Quare(color(255,255,255), color(255,0,0));
+          //quare.animate();
+          // each animation starts at each 0.5 mark
+          if (time - quares[count].delay > 0 && time - quares[count].delay <= 1)
             quares[count].animate();
-        popMatrix();
+          else
+            quares[count].station();
+        //popMatrix();
       popMatrix();
       
       count++;
     } 
   }
- 
-  if (frameCount == numFrames) {
+  
+  if (frameCount % 100 == 0) {
+    switched = !switched; 
+  }
+  
+  saveFrame("f###.gif");
+  if (frameCount == 200) {
     exit();
   }
 }
@@ -54,31 +77,42 @@ void draw() {
 class Quare {
   color startColor;  // starting color
   color transColor;  // transitioning color
-  float aniDelay;
+  float delay;
   
-  Quare(color sColor, color tColor, float delay) {
+
+  
+  Quare(color sColor, color tColor, float d) {
     startColor = sColor;
     transColor = tColor;
-    aniDelay = delay;
+    delay = d;
   }
   
   // animating function - using time global
   void animate() {
     // time constrains
-    if (time < 0.15) {
-      angle = easeOutQuart(time, 0, -20, 0.15);
+    if (time-delay < 0.15) {
+      angle = easeOutQuart(time-delay, 0, -20, 0.15);
     } else {
-      float ani2 = map(time, 0.15, 1, 0, 0.85);
+      float ani2 = map(time-delay, 0.15, 1, 0, 0.85);
       angle = easeOutQuart(ani2, -20, 20+270, 0.85);
     }
     
     // angle constrains
     if (angle < 45) {
-      fill(startColor); 
-    } else if (angle > 45 && time < 0.5) {  // wow so hacky sack
-      fill(colorEase(startColor, transColor, 0.5));
+      if (switched)
+        fill(startColor); 
+      else
+        fill(transColor);
+    } else if (angle > 45 && time-delay < 0.5) {  // wow so hacky sack
+      if (switched)
+        fill(colorEase(startColor, transColor, 0.5));
+      else
+        fill(colorEase(transColor, startColor, 0.5));
     } else {
-      fill(transColor);
+      if (switched)
+        fill(transColor);
+      else
+        fill(startColor);
     }
     
     translate(70, 70);
@@ -87,7 +121,21 @@ class Quare {
   }
   
   void station() {
-    rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2));
+    pushMatrix();
+    translate(70, 70);
+    if (switched)
+      fill(transColor);
+    else
+      fill(startColor);
+    rect(-(70*sqrt(2)/2),-(70*sqrt(2)/2), 70*sqrt(2), 70*sqrt(2), 8);
+    popMatrix();
+  }
+  
+  color colorEase(color current, color target, float duration) {
+    float r = easeInOutQuart(time-delay, red(current), red(target)-red(current), duration, 0);
+    float g = easeInOutQuart(time-delay, green(current), green(target)-green(current), duration, 0);
+    float b = easeInOutQuart(time-delay, blue(current), blue(target)-blue(current), duration, 0);
+    return color(r, g, b);
   }
 }
 
