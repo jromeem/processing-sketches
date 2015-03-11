@@ -68,10 +68,10 @@ void draw() {
     switched = !switched; 
   }
   
-  saveFrame("f###.gif");
-  if (frameCount == 200) {
-    exit();
-  }
+//  saveFrame("f###.gif");
+//  if (frameCount == 200) {
+//    exit();
+//  }
 }
 
 class Quare {
