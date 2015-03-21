@@ -5,6 +5,7 @@ Qrid q = new Qrid(20);
 Quare[] stack;
 Quare current;
 Quare next;
+Quare previous;
 
 void setup() {
   size(SIZE+1,SIZE+1,P2D);
@@ -21,29 +22,53 @@ void setup() {
   Quare[] temp = { start };
   stack = temp;
   
-  // draw once
-  //  noLoop();
+  frameRate(30);
+//  noLoop();
 }
 
 void draw() {
-  if (stack.length == 0)
-    exit();
-  
-  fill(random(0,255),random(0,255),random(0,255));
   current = stack[stack.length-1];
+  
   current.display();
   
-  if (current.allVisited()) {
-    stack = (Quare[]) shorten(stack); 
+  if (current.allVisited()) {      
+    fill(255,0,0);
+    if (stack.length > 2)
+      current.connectNeighbor(stack[stack.length-2]);
+
+    stack = (Quare[]) shorten(stack);
+    if (stack.length == 0)
+      noLoop();
   } else {
     next = current.chooseRandomUnvisted();
+    fill(0);
     current.visit(next);
+    
+    // trailing front
+    fill(255,0,0);
+    next.display();
+
     stack = (Quare[]) append(stack, next);
   }
+  
+//  background(255);
+//  stroke(230);
+//  q.displayQrid();
+//  fill(230);
+//  noStroke();
+//  q.displayQuares();
+//  q.makeNeighbors();
+//  
+//  fill(255,0,0);
+//  Quare t = q.highlightRandom();
+//  Quare d = t.chooseRandomUnvisted();
+//  t.visit(d);
+
 }
 
 void mouseClicked() {
   redraw();
+  noLoop();
 }
 
 class Quare {
@@ -85,17 +110,19 @@ class Quare {
   }
   
   void connectNeighbor(Quare neigh) {
-    int x = neigh.posx() < posx ? -2 : 2;
-    int y = neigh.posy() < posy ? -2 : 2;
-    rect(posx, posy,
-         (neigh.posx()==posx) ? size : x*size,
-         (neigh.posy()==posy) ? size : y*size);
+    int dx = int((neigh.posx()-posx)/abs(neigh.posx()-posx));
+    int dy = int((neigh.posy()-posy)/abs(neigh.posy()-posy));
+    
+    rect(dx<0 ? dx*2*size+posx : posx,
+         dy<0 ? dy*2*size+posy : posy,
+         dy==0 ? size*3 : size,
+         dx==0 ? size*3 : size);
   }
   
   Quare visit(Quare neighbor) {
     seen = true;
     connectNeighbor(neighbor);
-    next.visited();
+    neighbor.visited();
     return neighbor;
   }
   
