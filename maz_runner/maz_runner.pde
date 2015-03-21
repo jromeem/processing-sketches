@@ -1,29 +1,33 @@
 int SIZE = 500;
-int jj = 0;
 
-Qrid q = new Qrid(20);
+Qrid q = new Qrid(15);
 Quare[] stack;
 Quare current;
 Quare next;
 Quare previous;
 
+color backgd = color(0,54,67);
+color snake = color(148,203,74);
+
+color presnake = color(71,108,94);
+color head = color(249,89,0);
+
 void setup() {
   size(SIZE+1,SIZE+1,P2D);
-  background(255);
+  background(backgd);
   
-  stroke(230);
-  q.displayQrid();
-  fill(230);
+//  stroke(230);
+//  q.displayQrid();
+//  fill(230);
   noStroke();
-  q.displayQuares();
+//  q.displayQuares();
   q.makeNeighbors();
   
   Quare start = q.highlightRandom();
   Quare[] temp = { start };
   stack = temp;
   
-  frameRate(30);
-//  noLoop();
+  //  noLoop();
 }
 
 void draw() {
@@ -32,38 +36,32 @@ void draw() {
   current.display();
   
   if (current.allVisited()) {      
-    fill(255,0,0);
-    if (stack.length > 2)
+    fill(snake);
+    if (stack.length > 1)
       current.connectNeighbor(stack[stack.length-2]);
 
     stack = (Quare[]) shorten(stack);
-    if (stack.length == 0)
-      noLoop();
+    if (stack.length == 0) {
+      fill(snake);
+      
+      float dim = SIZE/(q.qsize*2.0);
+      float offset = 0.5*dim;
+      
+      rect(0, offset, SIZE/q.qsize()/2.0, SIZE/q.qsize()/2.0);
+      rect(SIZE-offset, SIZE-3.0*offset, SIZE/q.qsize()/2.0, SIZE/q.qsize()/2.0);
+      
+      exit();
+    }
+      
   } else {
     next = current.chooseRandomUnvisted();
-    fill(0);
+    fill(presnake);
     current.visit(next);
-    
-    // trailing front
-    fill(255,0,0);
-    next.display();
 
     stack = (Quare[]) append(stack, next);
   }
   
-//  background(255);
-//  stroke(230);
-//  q.displayQrid();
-//  fill(230);
-//  noStroke();
-//  q.displayQuares();
-//  q.makeNeighbors();
-//  
-//  fill(255,0,0);
-//  Quare t = q.highlightRandom();
-//  Quare d = t.chooseRandomUnvisted();
-//  t.visit(d);
-
+//  saveFrame("f####.gif");
 }
 
 void mouseClicked() {
@@ -117,6 +115,9 @@ class Quare {
          dy<0 ? dy*2*size+posy : posy,
          dy==0 ? size*3 : size,
          dx==0 ? size*3 : size);
+         
+     fill(head);
+     neigh.display();
   }
   
   Quare visit(Quare neighbor) {
