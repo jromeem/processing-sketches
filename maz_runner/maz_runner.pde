@@ -1,5 +1,4 @@
 int SIZE = 500;
-int jj = 0;
 
 void setup() {
   size(SIZE+1,SIZE+1,P2D);
@@ -9,9 +8,9 @@ void setup() {
 }
 
 void draw() {
-  Qrid q = new Qrid(25);
-//  stroke(230);
-//  q.displayQrid();
+  Qrid q = new Qrid(20);
+  stroke(230);
+  q.displayQrid();
   fill(230);
   noStroke();
   q.displayQuares();
@@ -19,12 +18,6 @@ void draw() {
   fill(255,0,0);
   Quare t = q.highlightRandom();
   fill(0,0,255);
-  
-//  if (t.left() != null)
-//    println("left: " + t.left().id());
-//  println("this: " + t.id());
-//  if (t.right() != null)
-//    println("rght: " + t.right().id);
   t.highlightNeighbors();
 }
 
@@ -39,6 +32,7 @@ class Quare {
   
   int id;
   boolean seen = false;
+  
   Quare top;
   Quare bottom;
   Quare left;
@@ -63,18 +57,27 @@ class Quare {
   }
   
   void highlightNeighbors() {
-    if (top != null) top.display();
-    if (right != null) right.display();
-    if (bottom != null) bottom.display();
-    if (left != null) left.display();
+    if (top != null) { top.display(); }
+    if (right != null) { right.display(); }
+    if (bottom != null) { bottom.display(); }
+    if (left != null) { left.display(); }
+  }
+  
+  void connectNeighbor(Quare neigh) {
+    int x = neigh.posx() < posx ? -2 : 2;
+    int y = neigh.posy() < posy ? -2 : 2;
+    rect(posx, posy,
+         (neigh.posx()==posx) ? size : x*size,
+         (neigh.posy()==posy) ? size : y*size);
   }
   
   int id() { return id; }
+  float posx() { return posx; }
+  float posy() { return posy; }
   Quare top() { return top; }
   Quare right() { return right; }
   Quare bottom() { return bottom; }
   Quare left() { return left; }
-  
 }
 
 class Qrid {
@@ -85,10 +88,6 @@ class Qrid {
     qsize = s;
     qgrid = new Quare[int(qsize*qsize)];
     initializeQuares();
-  }
-  
-  int qsize() {
-    return qsize; 
   }
   
   void initializeQuares() {
