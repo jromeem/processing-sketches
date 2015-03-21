@@ -1,24 +1,45 @@
 int SIZE = 500;
+int jj = 0;
+
+Qrid q = new Qrid(20);
+Quare[] stack;
+Quare current;
+Quare next;
 
 void setup() {
   size(SIZE+1,SIZE+1,P2D);
   background(255);
-  // draw once
-  noLoop();
-}
-
-void draw() {
-  Qrid q = new Qrid(20);
+  
   stroke(230);
   q.displayQrid();
   fill(230);
   noStroke();
   q.displayQuares();
   q.makeNeighbors();
-  fill(255,0,0);
-  Quare t = q.highlightRandom();
-  fill(0,0,255);
-  t.highlightNeighbors();
+  
+  Quare start = q.highlightRandom();
+  Quare[] temp = { start };
+  stack = temp;
+  
+  // draw once
+  //  noLoop();
+}
+
+void draw() {
+  if (stack.length == 0)
+    exit();
+  
+  fill(random(0,255),random(0,255),random(0,255));
+  current = stack[stack.length-1];
+  current.display();
+  
+  if (current.allVisited()) {
+    stack = (Quare[]) shorten(stack); 
+  } else {
+    next = current.chooseRandomUnvisted();
+    current.visit(next);
+    stack = (Quare[]) append(stack, next);
+  }
 }
 
 void mouseClicked() {
@@ -71,9 +92,78 @@ class Quare {
          (neigh.posy()==posy) ? size : y*size);
   }
   
+  Quare visit(Quare neighbor) {
+    seen = true;
+    connectNeighbor(neighbor);
+    next.visited();
+    return neighbor;
+  }
+  
+  boolean allVisited() {
+    boolean all = true;
+    if (top != null)
+      all = all && top.seen();
+    if (right != null)
+      all = all && right.seen();
+    if (left != null)
+      all = all && left.seen();
+    if (bottom != null)
+      all = all && bottom.seen();
+    return all;
+  }
+  
+  // 0 - top; 1 - right; 2 - bottom; 3 - left
+  Quare chooseRandomUnvisted() {
+    int randmove;
+    Quare chosenQuare = null;
+    boolean chosen = false;
+    
+    while (!chosen) {
+      randmove = int(random(4));
+      switch(randmove) {
+        case 0:
+          if (top != null) {
+            if (!top.seen())
+              chosen = true; 
+              chosenQuare = top;
+          } break;
+          
+        case 1:
+          if (right != null) {
+            if (!right.seen())
+              chosen = true;
+              chosenQuare = right; 
+          } break;
+          
+        case 2:
+          if (bottom != null) {
+            if (!bottom.seen())
+              chosen = true;
+              chosenQuare = bottom;
+          } break;
+          
+        case 3:
+          if (left != null) {
+            if (!left.seen())
+              chosen = true;
+              chosenQuare = left; 
+          } break;
+          
+        default:
+          println("error");
+          exit();
+          break; 
+      }
+    }
+    
+    return chosenQuare;
+  }
+  
   int id() { return id; }
   float posx() { return posx; }
   float posy() { return posy; }
+  boolean seen() { return seen; }
+  void visited() { seen = true; }
   Quare top() { return top; }
   Quare right() { return right; }
   Quare bottom() { return bottom; }
@@ -89,6 +179,8 @@ class Qrid {
     qgrid = new Quare[int(qsize*qsize)];
     initializeQuares();
   }
+  
+  int qsize() { return qsize; }
   
   void initializeQuares() {
     int k = 0;
