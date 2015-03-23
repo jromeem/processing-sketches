@@ -1,7 +1,7 @@
 int SIZE = 500;
-int QSIZE = 50;
+int QSIZE = 30;
 
-boolean IMAGE_MODE = true;
+boolean IMAGE_MODE = false;
 
 Theme th = new Theme();
 Qrid q = new Qrid(QSIZE);
@@ -13,13 +13,14 @@ Quare previous;
 
 PImage parn;
 
-
 void setup() {
-  parn = loadImage("hyrule.png");
-  parn.loadPixels();
+  if (IMAGE_MODE) {
+    parn = loadImage("hyrule.png");
+    parn.loadPixels();
+  }
   
   noStroke();
-  size(SIZE+1,SIZE+1,P2D);
+  size(SIZE*2+1,SIZE+1,P2D);
   
   th.loadSerenade();
   background(th.bkgd());
@@ -29,7 +30,7 @@ void setup() {
   Quare[] temp = { start };
   stack = temp;
   
-  frameRate(1000);
+  frameRate(MAX_INT);
 }
 
 void draw() {
