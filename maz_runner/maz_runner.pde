@@ -34,7 +34,7 @@ void setup() {
 void draw() {
   
   current = stack[stack.length-1];
-  current.display();
+//  current.display();
   
   if (current.allVisited()) {
     
