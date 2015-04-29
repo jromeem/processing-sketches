@@ -1,7 +1,7 @@
 int SIZE = 500;
 int QSIZE = 50;
 
-boolean IMAGE_MODE = true;
+boolean IMAGE_MODE = false;
 
 Theme th = new Theme();
 Qrid q = new Qrid(QSIZE);
@@ -13,7 +13,6 @@ Quare previous;
 
 PImage parn;
 
-
 void setup() {
   parn = loadImage("hyrule.png");
   parn.loadPixels();
@@ -21,7 +20,7 @@ void setup() {
   noStroke();
   size(SIZE+1,SIZE+1,P2D);
   
-  th.loadSerenade();
+  th.loadBolero();
   background(th.bkgd());
  
   q.makeNeighbors();
@@ -29,13 +28,13 @@ void setup() {
   Quare[] temp = { start };
   stack = temp;
   
-  frameRate(1000);
+  frameRate(200);
 }
 
 void draw() {
   
   current = stack[stack.length-1];
-  current.display();
+//  current.display();
   
   if (current.allVisited()) {
     
@@ -81,7 +80,7 @@ void draw() {
 }
 
 void mouseClicked() {
-  th.loadSerenade();
+  th.loadBolero();
   q = new Qrid(QSIZE);
   q.makeNeighbors();
   Quare start = q.highlightRandom();
@@ -170,10 +169,10 @@ class Quare {
     Quare chosenQuare = null;
     boolean chosen = false;
     
-    int[] distro = {0,1,2,3,1,3,1,3,1,3,1,3};
+    int[] distro = {0,1,2,3,2,3,2,3,2,3,2,3,2};
     
     while (!chosen) {
-      randmove = distro[int(random(12))];
+      randmove = distro[int(random(distro.length))];
       switch(randmove) {
         case 0:
           if (top != null) {
