@@ -1,19 +1,19 @@
-int NUMCYS = 150;
-int DIST = 50;
+int NUMCYS = 100;
+int DIST = 60;
 float cycle = 0;
 
 Cycle[] cys = new Cycle[NUMCYS];
 
 int themec = 0;
-color[] themes = {color(230, 100, 100),
-                  color(100, 230, 100),
-                  color(100, 100, 230),
-                  color(230, 230, 230)};
+color[] themes = {color(230,80,80),
+                  color(40,150,52),
+                  color(68,128,210),
+                  color(150, 150, 145)};
 color theme = themes[themec];
 
 void reset() {
   for (int i=0; i<NUMCYS; i++) {
-    cys[i] = new Cycle(random(80,420), random(80,420), random(40,150));
+    cys[i] = new Cycle(random(100,400), random(100,400), random(40,150));
   }
 }
 
@@ -27,29 +27,33 @@ void setup() {
 void draw() {
   scale(1.5);
   translate(-80,-80);
-  background(30);
+  background(color(44,46,42));
   
   for (int j=0; j<NUMCYS; j++) {
     cys[j].display();
     for (int k=0; k<NUMCYS; k++) {
       float dist = cys[j].mm.v.dist(cys[k].mm.v);
-      if (dist < 100) {
+      if (dist < DIST) {
         stroke(map(dist,0,DIST,red(theme),30),
                map(dist,0,DIST,green(theme),30),
                map(dist,0,DIST,blue(theme),30));
+//        stroke(theme);
         line(cys[j].mm.v.x, cys[j].mm.v.y, cys[k].mm.v.x, cys[k].mm.v.y);
       }
     } 
   }
   cycle += 0.01;
-  saveFrame("f#####.gif");
+//  saveFrame("f#####.gif");
+  if (cycle*3 >= TWO_PI) {
+    exit(); 
+  }
 }
 
 void mousePressed() {
 //  themec++;
 //  if (themec > 3) themec = 0;
 //  theme = themes[themec];
-  exit();
+//  exit();
   reset();
 }
 
@@ -68,7 +72,7 @@ class Cycle {
      
      int[] d = {-1,1};
      int direction = d[int(random(d.length))];
-     this.velocity = random(1, 2) * direction;
+     this.velocity = 3 * direction;
      float rangle = random(0, TWO_PI);
      
      float mmx = this.v.x + this.radius * cos(rangle);
