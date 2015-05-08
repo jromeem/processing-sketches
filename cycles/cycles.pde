@@ -1,17 +1,20 @@
-int NUMCYS = 100;
-int DIST = 60;
-float cycle = 0;
+int NUMCYS = 50;
+int DIST = 30;
+boolean debug = false;
+boolean grad_thresh = false;
 
+float cycle = 0;
 Cycle[] cys = new Cycle[NUMCYS];
 
-int themec = 0;
+int themec = 1;
 color[] themes = {color(230,80,80),
-                  color(40,150,52),
+                  color(40,200,52),
                   color(68,128,210),
                   color(150, 150, 145)};
 color theme = themes[themec];
 
 void reset() {
+  cys = new Cycle[NUMCYS];
   for (int i=0; i<NUMCYS; i++) {
     cys[i] = new Cycle(random(100,400), random(100,400), random(40,150));
   }
@@ -34,19 +37,25 @@ void draw() {
     for (int k=0; k<NUMCYS; k++) {
       float dist = cys[j].mm.v.dist(cys[k].mm.v);
       if (dist < DIST) {
-        stroke(map(dist,0,DIST,red(theme),30),
-               map(dist,0,DIST,green(theme),30),
-               map(dist,0,DIST,blue(theme),30));
-//        stroke(theme);
+
+        if (grad_thresh) {
+          stroke(map(dist,0,DIST,red(theme),30),
+                 map(dist,0,DIST,green(theme),30),
+                 map(dist,0,DIST,blue(theme),30));
+        } else {
+          stroke(theme);  
+        }
         line(cys[j].mm.v.x, cys[j].mm.v.y, cys[k].mm.v.x, cys[k].mm.v.y);
       }
     } 
   }
   cycle += 0.01;
+  
 //  saveFrame("f#####.gif");
-  if (cycle*3 >= TWO_PI) {
-    exit(); 
-  }
+//  if (cycle*3 >= TWO_PI) {
+//    exit(); 
+//  }
+
 }
 
 void mousePressed() {
@@ -55,6 +64,37 @@ void mousePressed() {
 //  theme = themes[themec];
 //  exit();
   reset();
+}
+
+void keyPressed() {
+  if (key == 'w' || key == 'W') {
+    NUMCYS += 5;
+    reset(); 
+  } else if (key == 's' || key == 'S') {
+    NUMCYS -= 5;
+    reset(); 
+  } else if (key == 'a' || key == 'A') {
+    debug = !debug;
+  } else if (key == 'd' || key == 'D') {
+    grad_thresh = !grad_thresh;
+  }
+  
+  if (key == CODED) {
+    if (keyCode == UP) {
+      DIST += 5;
+    } else if (keyCode == DOWN) {
+      DIST -= 5;
+    } else {
+      // do nothing 
+    }
+  }
+  
+  if (NUMCYS < 0) {
+    NUMCYS = 0; 
+  }
+  if (DIST < 0) {
+    DIST = 0; 
+  }
 }
 
 class Cycle {
@@ -81,9 +121,11 @@ class Cycle {
   }
   
   void display() {
-//     noFill();
-//     stroke(30,60,30);
-//     ellipse(this.v.x, this.v.y, this.size, this.size);
+     if (debug) {
+       noFill();
+       stroke(30,60,30);
+       ellipse(this.v.x, this.v.y, this.size, this.size);
+     }
      this.mm.v.set(this.v.x + this.radius * cos(this.velocity*(this.mm.offset + cycle)),
                    this.v.y + this.radius * sin(this.velocity*(this.mm.offset + cycle)));
      this.mm.display();

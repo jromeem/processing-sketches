@@ -1,5 +1,5 @@
 int SIZE = 500;
-int QSIZE = 50;
+int QSIZE = 3;
 
 boolean IMAGE_MODE = false;
 
@@ -14,13 +14,16 @@ Quare previous;
 PImage parn;
 
 void setup() {
-  parn = loadImage("hyrule.png");
+  parn = loadImage("floral.png");
   parn.loadPixels();
   
   noStroke();
   size(SIZE+1,SIZE+1,P2D);
   
   th.loadBolero();
+  
+  q.displayQrid();
+  q.displayQuares();
   background(th.bkgd());
  
   q.makeNeighbors();
@@ -32,7 +35,8 @@ void setup() {
 }
 
 void draw() {
-  
+  scale(0.98);
+  translate(5,5);
   current = stack[stack.length-1];
 //  current.display();
   
@@ -54,11 +58,11 @@ void draw() {
       float dim = SIZE/(q.qsize*2.0);
       float offset = 0.5*dim;
       
-      saveFrame("f####.png");
+      //saveFrame("f####.png");
       
       // 'exits'
-      rect(0, offset, SIZE/q.qsize()/2.0, SIZE/q.qsize()/2.0);
-      rect(SIZE-offset, SIZE-3.0*offset, SIZE/q.qsize()/2.0, SIZE/q.qsize()/2.0);
+      rect(0-10, offset, SIZE/q.qsize()/2.0, SIZE/q.qsize()/2.0);
+      rect(SIZE-offset, SIZE-3.0*offset, SIZE/q.qsize()/2.0 + 10 , SIZE/q.qsize()/2.0);
       
       noLoop();
     }
@@ -77,6 +81,16 @@ void draw() {
   }
   
   // saveFrame("f####.gif");
+}
+
+void resetdraw() {
+  q = new Qrid(QSIZE);
+  q.makeNeighbors();
+  Quare start = q.highlightRandom();
+  Quare[] temp = { start };
+  stack = temp;
+
+  background(th.bkgd());
 }
 
 void mouseClicked() {
@@ -169,7 +183,9 @@ class Quare {
     Quare chosenQuare = null;
     boolean chosen = false;
     
-    int[] distro = {0,1,2,3,2,3,2,3,2,3,2,3,2};
+//    int[] distro = {0,1,2,3};
+//    int[] distro = {0,1,2,3,2,3,2,3,2,3,2,3,2};
+    int[] distro = {0,1,2,1,3,1,3,1,3,1,3,1,3};
     
     while (!chosen) {
       randmove = distro[int(random(distro.length))];
@@ -274,6 +290,7 @@ class Qrid {
   
   Quare highlightRandom() {
     int randpos = int(random(0, qgrid.length));
+    fill(th.bkgd);
     qgrid[randpos].display();
     return qgrid[randpos];
   }
