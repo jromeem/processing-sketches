@@ -36,7 +36,7 @@ void draw() {
   theta++;
   
   if (radians(theta) <= TWO_PI) {
-//    saveFrame("ff####.gif"); 
+    saveFrame("ff####.gif"); 
   }
   
 }
