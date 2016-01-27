@@ -14,16 +14,16 @@ boolean textShow = true;
 boolean startSave = false;
 
 color[] p5colors = {
-  color(45, 123, 182),  // blue
-  color(255, 255, 255), // white
-  color(238, 153, 0),   // brown 
-  color(237, 34, 93),   // pink
-
-  //color(0,54,67),
-  //color(148,203,74),
-  //color(71,108,94),
+  //color(45, 123, 182),  // blue
   //color(255, 255, 255), // white
-  //color(249,89,0),
+  //color(238, 153, 0),   // brown 
+  //color(237, 34, 93),   // pink
+
+  color(0,54,67),
+  color(71,108,94),
+  color(255, 255, 255), // white
+  color(249,89,0),
+  color(148,203,74),
 
   //color(51,37,50),
   //color(255,151,79),
