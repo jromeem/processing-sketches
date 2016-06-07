@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+    <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+    <head>
+        <title>initialz</title>
+        <meta name="author" content="Jerome Martinez" />
+        <link href="styles.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="http://favicon.cargocollective.com/favicon.ico">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.6.0/lodash.min.js"></script>
+
+        <style type="text/css">
+            #ui {
+                width: 400px;
+                height: 100%;
+                float: right;
+            }
+            #theme-table td {
+                font-size: 14px;
+                height: 30px;
+                border: 1px solid #ccc;
+                padding: 5px;
+                opacity: 0.9
+            }
+            #theme-table td:hover {
+                opacity: 0.2;
+            }
+            #size-slider {
+                float: left;
+                margin-top: 50px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container">
+            <div id="p5canvas">
+                <div id="ui">
+                    <table id="theme-table">
+                        <th>Theme</th>
+                        <tr>
+                            <td id="minuet">Minuet</td>
+                            <td id="bolero">Bolero</td>
+                            <td id="serenade">Serenade</td>
+                        </tr>
+                        <tr>
+                            <td id="nocturne">Nocturne</td>
+                            <td id="requiem">Requiem</td>
+                            <td id="prelude">Prelude</td>
+                        </tr>
+                    </table>
+
+                    <div id="size-slider">
+                    <h4 style="width:100%; padding-left:15px; margin:5px; text-align:left;">Size</h4>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/p5.min.js"></script>
+        <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/addons/p5.dom.js"></script>
+        <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/addons/p5.sound.js"></script>
+        <script src="maze.js"></script>
+    </body>
+    </html>
