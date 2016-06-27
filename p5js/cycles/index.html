@@ -6,12 +6,49 @@
         <link href="styles.css" rel="stylesheet" type="text/css"/>
         <link rel="shortcut icon" href="http://favicon.cargocollective.com/favicon.ico">
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
+        <style type="text/css">
+            #ui {
+                width: 400px;
+                float: right;
+            }
+            #theme-table td {
+                font-size: 14px;
+                height: 30px;
+                border: 1px solid #ccc;
+                padding: 5px;
+                opacity: 0.9
+            }
+            #theme-table td:hover {
+                opacity: 0.2;
+            }
+            #num-slider {
+                float: left;
+                margin-top: 50px;
+            }
+            #thresh-slider {
+                float: left;
+                margin-top: 50px;
+            }
+        </style>
     </head>
     <body>
         <div id="container">
-            <div id="p5canvas"></div>
+            <div id="p5canvas">
+                <div id="ui">
+                    <div id="num-slider">
+                    <h4 style="width:100%; padding-left:15px; margin:5px; text-align:left;">Amount</h4>
+                    </div>
+
+                    <div id="thresh-slider">
+                    <h4 style="width:100%; padding-left:15px; margin:5px; text-align:left;">Threshold</h4>
+                    </div>
+                </div>
+
+
+            </div>
         </div>
 
+        <script src="/Users/jromeem/.node/lib/node_modules/lodash/lodash.min.js"></script>
         <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/p5.min.js"></script>
         <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/addons/p5.dom.js"></script>
         <script src="/Users/jromeem/.node/lib/node_modules/p5/lib/addons/p5.sound.js"></script>

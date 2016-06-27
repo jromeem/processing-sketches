@@ -12,7 +12,7 @@ float staticy = mouseY;
 ArrayList<Bird> bb;
 
 void setup() {
-  size(1500, 1500, P2D);
+  size(500, 500, P2D);
   background(255);
   b = new Bird(250, 250, 45);
   bb = new ArrayList<Bird>();
