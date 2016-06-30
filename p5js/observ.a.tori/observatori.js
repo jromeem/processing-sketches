@@ -25,7 +25,7 @@ function preload() {
 }
 
 function setup() {
-    var canvas = createCanvas(500, 500);
+    var canvas = createCanvas(window.innerWidth, window.innerHeight);
     canvas.parent("p5canvas");
 
     // get a song
@@ -43,18 +43,12 @@ function setup() {
     offset = 0;
     randX = int(random(0+offset, width-offset));
     randY = int(random(0+offset, height-offset));
-    background(255);
+    background(190, 235, 159, 10);
 }
 
 function draw() {
     if (!randomSong.isPlaying())
         noLoop();
-    // background(100);
-
-    noStroke();
-    fill(255, 255, 255, 10);
-    rect(0, 0, width, height);
-    // background(100,100,100,0.5);
 
     // var spectrum = fft.analyze(); 
     // noStroke();
@@ -69,39 +63,49 @@ function draw() {
     var rms = analyzer.getLevel();
     var normRms = rms * 100;
     var colr, colg, colb;
-    colr = map(rms, 0, 0.3, 255, 100);
-    colg = map(rms, 0, 0.3, 100, 255);;
-    colb = map(rms, 0, 0.3, 255, 80);;
+    colr = map(rms, 0, 0.1, 0, 190);
+    colg = map(rms, 0, 0.1, 163, 235);;
+    colb = map(rms, 0, 0.1, 136, 159);;
 
-    var waveform = fft.waveform();
-    noFill();
-    beginShape();
-        stroke(colr,colg,colb); // waveform is red
-        strokeWeight(1);
-            for (var i = 0; i< waveform.length; i++){
-            var x = map(i, 0, waveform.length, 0, width);
-            var y = map( waveform[i], -1, 1, 0, height);
-        vertex(x,y);
-        }
-    endShape();
+    // var waveform = fft.waveform();
+    // noFill();
+    // beginShape();
+    //     stroke(colr,colg,colb); // waveform is red
+    //     strokeWeight(1);
+    //         for (var i = 0; i< waveform.length; i++){
+    //         var x = map(i, 0, waveform.length, 0, width);
+    //         var y = map( waveform[i], -1, 1, 0, height);
+    //     vertex(x,y);
+    //     }
+    // endShape();
 
     stroke(colr,colg,colb);
     var lineTop = map(rms, 0.0, 1.0, 0.0, height);
     var lineBottom = map(rms, 0.0, 1.0, height, 0.0);
+
+    var lineLeft = map(rms, 0.0, 1.0, 0.0, width);
+    var lineRight = map(rms, 0.0, 1.0, width, 0.0);
+
     line(0, lineBottom, width, lineBottom);
     line(0, lineTop, width, lineTop);
-    line(lineTop, 0, lineTop, height);
-    line(lineBottom, 0, lineBottom, height);
+    line(lineLeft, 0, lineLeft, height);
+    line(lineRight, 0, lineRight, height);
     // line(0, lineBottom, width, lineBottom);
 
-
-    // Draw an ellipse with size based on volume
-    noStroke(0);
-    fill(colr,colg,colb);
-
     if (rms > 0.01) {
-        ellipse(randX, randY, 10+rms*300, 10+rms*300);
-    } else {    
+        noStroke();
+        fill(190, 235, 159, 5);
+        rect(0, 0, width, height);
+
+        // Draw an ellipse with size based on volume
+        noStroke(0);
+        fill(colr,colg,colb);
+        ellipse(randX, randY, 10+rms*500, 10+rms*500);
+    } else {
+        noStroke();
+        fill(190, 235, 159, 100);
+        rect(0, 0, width, height);
+
         randX = int(random(0+offset, width-offset));
         randY = int(random(0+offset, height-offset));
     }
