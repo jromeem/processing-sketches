@@ -1,6 +1,6 @@
 console.log('hello observatori!');
 
-var analyzer, randomSong;
+var fft, analyzer, randomSong, randX, randY, offset;
 
 var songs = [];
 var songFiles = [
@@ -34,23 +34,77 @@ function setup() {
 
     // create a new Amplitude analyzer
     analyzer = new p5.Amplitude();
+    fft = new p5.FFT();
+
     // Patch the input to an volume analyzer
     analyzer.setInput(randomSong);
+    fft.setInput(randomSong);
+
+    offset = 0;
+    randX = int(random(0+offset, width-offset));
+    randY = int(random(0+offset, height-offset));
+    background(255);
 }
 
 function draw() {
     if (!randomSong.isPlaying())
         noLoop();
+    // background(100);
 
-    background(100);
+    noStroke();
+    fill(255, 255, 255, 10);
+    rect(0, 0, width, height);
+    // background(100,100,100,0.5);
 
-    var rms = analyzer.getLevel();
+    // var spectrum = fft.analyze(); 
+    // noStroke();
+    // fill(0,255,0); // spectrum is green
+    // for (var i = 0; i< spectrum.length; i++){
+    //     var x = map(i, 0, spectrum.length, 0, width);
+    //     var h = -height + map(spectrum[i], 0, 255, height, 0);
+    //     rect(x, height, width / spectrum.length, h )
+    // }
+
     // Get the average (root mean square) amplitude
     var rms = analyzer.getLevel();
-    fill(200,250,100);
-    noStroke(0);
+    var normRms = rms * 100;
+    var colr, colg, colb;
+    colr = map(rms, 0, 0.3, 255, 100);
+    colg = map(rms, 0, 0.3, 100, 255);;
+    colb = map(rms, 0, 0.3, 255, 80);;
+
+    var waveform = fft.waveform();
+    noFill();
+    beginShape();
+        stroke(colr,colg,colb); // waveform is red
+        strokeWeight(1);
+            for (var i = 0; i< waveform.length; i++){
+            var x = map(i, 0, waveform.length, 0, width);
+            var y = map( waveform[i], -1, 1, 0, height);
+        vertex(x,y);
+        }
+    endShape();
+
+    stroke(colr,colg,colb);
+    var lineTop = map(rms, 0.0, 1.0, 0.0, height);
+    var lineBottom = map(rms, 0.0, 1.0, height, 0.0);
+    line(0, lineBottom, width, lineBottom);
+    line(0, lineTop, width, lineTop);
+    line(lineTop, 0, lineTop, height);
+    line(lineBottom, 0, lineBottom, height);
+    // line(0, lineBottom, width, lineBottom);
+
 
     // Draw an ellipse with size based on volume
-    ellipse(width/2, height/2, 10+rms*300, 10+rms*300);
-    console.log("rms: ", rms);
+    noStroke(0);
+    fill(colr,colg,colb);
+
+    if (rms > 0.01) {
+        ellipse(randX, randY, 10+rms*300, 10+rms*300);
+    } else {    
+        randX = int(random(0+offset, width-offset));
+        randY = int(random(0+offset, height-offset));
+    }
+    console.log("rms: ", rms, 'normalized: ', normRms);
+
 }
