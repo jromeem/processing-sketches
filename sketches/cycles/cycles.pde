@@ -16,12 +16,12 @@ color theme = themes[themec];
 void reset() {
   cys = new Cycle[NUMCYS];
   for (int i=0; i<NUMCYS; i++) {
-    cys[i] = new Cycle(random(100,400), random(100,400), random(40,150));
+    cys[i] = new Cycle(random(100,width-100), random(100,height-100), random(40,150));
   }
 }
 
 void setup() {
-  size(500, 500, P2D);
+  size(2160,1080, P2D);
   color theme = themes[themec];
   blendMode(LIGHTEST);
   reset();
@@ -43,7 +43,7 @@ void draw() {
                  map(dist,0,DIST,green(theme),30),
                  map(dist,0,DIST,blue(theme),30));
         } else {
-          stroke(theme);  
+          stroke(theme);
         }
         line(cys[j].mm.v.x, cys[j].mm.v.y, cys[k].mm.v.x, cys[k].mm.v.y);
       }
@@ -77,6 +77,8 @@ void keyPressed() {
     debug = !debug;
   } else if (key == 'd' || key == 'D') {
     grad_thresh = !grad_thresh;
+  } else if (key == 't' || key == 'T') {
+    saveFrame("f#####.png");
   }
   
   if (key == CODED) {
