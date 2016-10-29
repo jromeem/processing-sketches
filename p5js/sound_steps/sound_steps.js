@@ -8,6 +8,7 @@ var scaleMultiplier = [1,1,1,1,
                        2,2,2,3,
                        3,4];
 var steps = [];
+var stepCount = 0;
 
 function setup() {
     // set the canvas
@@ -24,22 +25,34 @@ function setup() {
 function draw() {
     // background(255);
     noStroke();
+
     for (var i=0; i<grid.locs.length; i++) {
         var thisLocation = grid.locs[i];
 
         // if the current location isn't occupied
         if (!thisLocation.occupied) {
-            var randomFit = int(random(1, grid.biggestPossible(i)+1));
+            // var randomFit = int(random(1, grid.biggestPossible(i)+1));
+            var randomFit = 1;
+            if (stepCount == 0) {
+                randomFit == 1;
+            } else if (stepCount == 1 || stepCount == 2 || stepCount == 3) {
+                randomFit = 3;
+            } else if (stepCount == 4 || stepCount == 5) {
+                randomFit = 2;
+            }
+
             var step = new SoundStep(thisLocation.x, thisLocation.y, randomFit);
             grid.blockOff(i, randomFit);
             steps.push(step);
+            stepCount++;
         } else {
             continue;
         }
 
-        if (i > 0) {
+        if (stepCount == 6) {
             break;
         }
+
     }
 
     // debugging
@@ -127,7 +140,6 @@ Grid.prototype.blockOff = function(index, givenScale) {
     var yOffset = canvasSize / baseSize;
     for (var y=0; y<givenScale*yOffset; y+=yOffset) {
         for (var x=0; x<givenScale; x++) {
-            console.log(index, x, y);
             this.locs[x+y+index].occupied = true;
         }
     }
