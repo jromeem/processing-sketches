@@ -14,7 +14,8 @@ function setup() {
 
     noLoop();
     noStroke();
-    colorMode(RGB,255);
+    // colorMode(RGB,255);
+    colorMode(HSB,canvasSize);
 
     grid = new Grid();
 }
@@ -29,29 +30,12 @@ function draw() {
         // if the current location isn't occupied
         if (!thisLocation.occupied) {
             var randomFit = int(random(1, grid.biggestPossible(i)+1));
-            // var randomFit = 1;
-            // if (stepCount == 0) {
-            //     randomFit == 1;
-            // } else if (stepCount == 1 || stepCount == 2 || stepCount == 3) {
-            //     randomFit = 3;
-            // } else if (stepCount == 4) {
-            //     randomFit = 2;
-            // } else if (stepCount == 5) {
-            //     randomFit = grid.biggestPossible(i);
-            //     console.log("fifth", randomFit);
-            // }
-
             var step = new SoundStep(thisLocation.x, thisLocation.y, randomFit);
             grid.blockOff(i, randomFit);
             steps.push(step);
         } else {
             continue;
         }
-
-        // if (stepCount == 16) {
-        //     break;
-        // }
-
     }
 
     // debugging
@@ -83,7 +67,8 @@ function SoundStep(x, y, s) {
     this.stepSize = s;
 }
 SoundStep.prototype.display = function() {
-    fill(random(255),70,100);
+    // fill(random(255),70,100);
+    fill(this.posx+random(-50,50),canvasSize*0.70,canvasSize+random(-50,50));
     rect(this.posx+padding, this.posy+padding, this.stepSize*baseSize-padding*2, this.stepSize*baseSize-padding*2);
 };
 
