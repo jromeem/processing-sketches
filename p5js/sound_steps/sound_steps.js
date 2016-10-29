@@ -1,14 +1,11 @@
 
 // intials
 var grid;
-var padding = 5;
+var steps = [];
+var padding = 0;
+var maxScale = 3;
 var baseSize = 48;
 var canvasSize = 576;
-var scaleMultiplier = [1,1,1,1,
-                       2,2,2,3,
-                       3,4];
-var steps = [];
-var stepCount = 0;
 
 function setup() {
     // set the canvas
@@ -47,7 +44,6 @@ function draw() {
             var step = new SoundStep(thisLocation.x, thisLocation.y, randomFit);
             grid.blockOff(i, randomFit);
             steps.push(step);
-            stepCount++;
         } else {
             continue;
         }
@@ -74,7 +70,7 @@ function draw() {
     for (var i=0; i<steps.length; i++) {
         steps[i].display();
     }
-    console.log("steps!!", steps);
+    console.log("steps!!", steps.length);
     console.log("steps!!", grid);
 }
 
@@ -120,7 +116,8 @@ Grid.prototype.biggestPossible = function(index) {
     // check to your right
     var nextRight = 1;
     var nextRightLocation = this.locs[index];
-    while (nextRightLocation.x < canvasSize-baseSize && !this.locs[constrain(index, 0, this.locs.length-3)+2].occupied) {
+
+    while (nextRightLocation.x < canvasSize-baseSize && !this.locs[constrain(index, 0, this.locs.length-maxScale)+maxScale-1].occupied) {
         nextRightLocation = this.locs[nextRight+index];
         nextRight++; // every column
     }
@@ -135,7 +132,7 @@ Grid.prototype.biggestPossible = function(index) {
     }
 
     // return the smallest scale out of the two with each constrained to 3 as the max scale
-    var smallestScale = min(constrain(nextRight, 1, 3), constrain(nextDown, 1, 3));
+    var smallestScale = min(constrain(nextRight, 1, maxScale), constrain(nextDown, 1, maxScale));
     return smallestScale;
 };
 // given a size and a location, block off locations as occupied
