@@ -31,15 +31,18 @@ function draw() {
 
         // if the current location isn't occupied
         if (!thisLocation.occupied) {
-            // var randomFit = int(random(1, grid.biggestPossible(i)+1));
-            var randomFit = 1;
-            if (stepCount == 0) {
-                randomFit == 1;
-            } else if (stepCount == 1 || stepCount == 2 || stepCount == 3) {
-                randomFit = 3;
-            } else if (stepCount == 4 || stepCount == 5) {
-                randomFit = 2;
-            }
+            var randomFit = int(random(1, grid.biggestPossible(i)+1));
+            // var randomFit = 1;
+            // if (stepCount == 0) {
+            //     randomFit == 1;
+            // } else if (stepCount == 1 || stepCount == 2 || stepCount == 3) {
+            //     randomFit = 3;
+            // } else if (stepCount == 4) {
+            //     randomFit = 2;
+            // } else if (stepCount == 5) {
+            //     randomFit = grid.biggestPossible(i);
+            //     console.log("fifth", randomFit);
+            // }
 
             var step = new SoundStep(thisLocation.x, thisLocation.y, randomFit);
             grid.blockOff(i, randomFit);
@@ -49,23 +52,23 @@ function draw() {
             continue;
         }
 
-        if (stepCount == 6) {
-            break;
-        }
+        // if (stepCount == 16) {
+        //     break;
+        // }
 
     }
 
     // debugging
-    for (var i=0; i<grid.locs.length; i++) {
-        var thisLoc = grid.locs[i];
-        stroke(255,100,100);
-        if (thisLoc.occupied) {
-            fill(255,100,100,200);
-        } else {
-            noFill();
-        }
-        rect(grid.locs[i].x,grid.locs[i].y, baseSize, baseSize);
-    }
+    // for (var i=0; i<grid.locs.length; i++) {
+    //     var thisLoc = grid.locs[i];
+    //     stroke(255,100,100);
+    //     if (thisLoc.occupied) {
+    //         fill(255,100,100,200);
+    //     } else {
+    //         noFill();
+    //     }
+    //     rect(grid.locs[i].x,grid.locs[i].y, baseSize, baseSize);
+    // }
     // end debug
 
     for (var i=0; i<steps.length; i++) {
@@ -117,7 +120,7 @@ Grid.prototype.biggestPossible = function(index) {
     // check to your right
     var nextRight = 1;
     var nextRightLocation = this.locs[index];
-    while (nextRightLocation.x < canvasSize-baseSize && !nextRightLocation.occupied) {
+    while (nextRightLocation.x < canvasSize-baseSize && !this.locs[constrain(index, 0, this.locs.length-3)+2].occupied) {
         nextRightLocation = this.locs[nextRight+index];
         nextRight++; // every column
     }
