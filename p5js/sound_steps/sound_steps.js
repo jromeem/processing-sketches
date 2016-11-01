@@ -2,10 +2,10 @@
 // intials
 var grid;
 var steps = [];
-var padding = 0;
+var padding = 15;
 var maxScale = 3;
-var baseSize = 48;
-var canvasSize = 576;
+var baseSize = 72;
+var canvasSize = 720;
 
 function setup() {
     // set the canvas
@@ -14,8 +14,8 @@ function setup() {
 
     noLoop();
     noStroke();
-    // colorMode(RGB,255);
-    colorMode(HSB,canvasSize);
+    colorMode(RGB,255);
+    // colorMode(HSB,canvasSize);
 
     grid = new Grid();
 }
@@ -67,8 +67,8 @@ function SoundStep(x, y, s) {
     this.stepSize = s;
 }
 SoundStep.prototype.display = function() {
-    // fill(random(255),70,100);
-    fill(this.posx+random(-50,50),canvasSize*0.70,canvasSize+random(-50,50));
+    fill(random(255),70,100);
+    // fill(this.posx+random(-50,50),canvasSize*0.70,canvasSize+random(-50,50));
     rect(this.posx+padding, this.posy+padding, this.stepSize*baseSize-padding*2, this.stepSize*baseSize-padding*2);
 };
 
