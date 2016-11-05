@@ -4,8 +4,8 @@ var grid;
 var steps = [];
 var padding = 15;
 var maxScale = 3;
-var baseSize = 72;
-var canvasSize = 720;
+var baseSize = 96;
+var canvasSize = 672;
 
 function setup() {
     // set the canvas
