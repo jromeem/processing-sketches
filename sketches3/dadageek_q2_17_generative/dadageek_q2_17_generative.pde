@@ -20,10 +20,8 @@ color cc;
 
 void setup() {
   size(700,700);
-  //size(960, 540);
-  //fullScreen();
-  smooth();
   pixelDensity(2);
+  smooth();
   
   background(bckg);
   frameRate(25);
@@ -34,6 +32,7 @@ void setup() {
 }
 
 void draw() {
+  // draw background grid
   for (int i=0; i<width; i+=30) {
     for (int y=0; y<height; y+=30) {
       stroke(random(255), random(255), random(255));
