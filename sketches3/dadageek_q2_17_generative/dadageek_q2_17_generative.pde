@@ -39,8 +39,6 @@ void draw() {
       point(i, y);
     }
   }
-  
-  
   // background related
   fill(bckg, overlayAlpha);
   rect(-5, -5, width+10, height+10);
