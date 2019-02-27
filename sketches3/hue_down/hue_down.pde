@@ -1,6 +1,6 @@
 void setup() {
-  //size(500,500,P2D);
-  fullScreen(P2D);
+  size(500,500,P2D);
+  //fullScreen(P2D);
   pixelDensity(2);
   noStroke();
   colorMode(HSB, height);
