@@ -4,32 +4,20 @@ Capture cam;
 Capture cam2;
 
 void setup() {
-  size(640, 480);
+  size(960, 540);
+  cam = new Capture(this, 1920, 1080, "HD Pro Webcam C920", 30);
+  cam.start();
 
-  String[] cameras = Capture.list();
-  
-  if (cameras.length == 0) {
-    println("There are no cameras available for capture.");
-    exit();
-  } else {
-    println("Available cameras:");
-    for (int i = 0; i < cameras.length; i++) {
-      println(cameras[i]);
-    }
-    
-    // The camera can be initialized directly using an 
-    // element from the array returned by list():
-    cam = new Capture(this, cameras[0]);
-    cam.start();     
-  }      
+  cam2 = new Capture(this, 1920, 1080, "HD Pro Webcam C920 #2", 30);
+  cam2.start();
 }
 
 void draw() {
-  if (cam.available() == true) {
+  if (cam.available() == true && cam2.available() == true) {
     cam.read();
+    cam2.read();
+
   }
-  image(cam, 0, 0);
-  // The following does the same, and is faster when just drawing the image
-  // without any additional resizing, transformations, or tint.
-  //set(0, 0, cam);
+  image(cam, 0, 0, 480, 270);
+  image(cam2, 480, 270, 480, 270);
 }
